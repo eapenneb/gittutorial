@@ -1,250 +1,198 @@
-Set your details
-git config --global user.name "John Doe"
-git config --global user.email "john@example.com"
-Use --global to set the configuration for all projects. If git config is used without --global and run inside a project directory, the settings are set for the specific project.
+Git Commands
+1.1 Init
+	Git allows groups of people to work on the same documents (often code) at the same time, and without stepping on each other's toes. It's a distributed version control system.
 
-Make git ignore file modes
-cd project/
-git config core.filemode false
-This option is useful if the file permissions are not important to us, for example when we are on Windows.
+	Our terminal prompt below is currently in an octobox directory. To initialize a Git repository here, type the following command:
 
-See your settings
-git config --list
-Initialize a git repository for existing code
-cd existing-project/
-git init
-Clone a remote repository
-git clone https://github.com/user/repository.git
-This creates a new directory with the name of the repository.
+	git init
 
-Clone a remote repository in the current directory
-git clone https://github.com/user/repository.git .
-Get help for a specific git command
-git help clone
-Update and merge your current branch with a remote
-cd repository/
-git pull origin master
-Where origin is the remote repository, and master the remote branch.
-If you don't want to merge your changes, use git fetch
+1.2 Checking the Status
+	Good job! As Git just told us, our octobox directory now has an empty repository in /.git/. The repository is a hidden directory where Git operates.
 
-View remote urls
-git remote -v
-Change origin url
-git remote set-url origin http//github.com/repo.git
-Add remote
-git remote add remote-name https://github.com/user/repo.git
-See non-staged (non-added) changes to existing files
-git diff
-Note that this does not track new files.
+	To save your progress as you go through this tutorial -- and earn a badge when you successfully complete it -- head over to create a free Code School account. We'll wait for you here.
 
-See staged, non-commited changes
-git diff --cached
-See differences between local changes and master
-git diff origin/master
-Note that origin/master is one local branch, a shorthand for refs/remotes/origin/master, which is the full name of the remote-tracking branch.
+	Next up, let's type the git status command to see what the current state of our project is:
 
-See differences between two commits
-git diff COMMIT1_ID COMMIT2_ID
-See the files that changed between two commits
-git diff --name-only COMMIT1_ID COMMIT2_ID
-See the files changed in a specific commit
-git diff-tree --no-commit-id --name-only -r COMMIT_ID
-or
+	git status
 
-git show --pretty="format:" --name-only COMMIT_ID
-Source: http://stackoverflow.com/a/424142/1391963
+1.3 Adding & Committing
 
-See diff before push
-git diff --cached origin/master
-See diff with only the changed lines (no context)
-git diff --unified=0
-See details (log message, text diff) of a commit
-git show COMMIT_ID
-Count the number of commits
-git rev-list HEAD --count
-git rev-list COMMIT_ID --count
-Check the status of the working tree (current branch, changed files...)
-git status
-Make some changes, commit them
-git add changed_file.txt
-git add folder-with-changed-files/
-git commit -m "Commiting changes"
-Rename/move and remove files
-git rm removeme.txt tmp/crap.txt
-git mv file_oldname.txt file_newname.txt
-git commit -m "deleting 2 files, renaming 1"
-Change message of last commit
-git commit --amend -m "New commit message"
-Push local commits to remote branch
-git push origin master
-Push commits to all remotes, in a single command
-Git does not do that, but see https://stackoverflow.com/a/18674313/1391963
+	I created a file called octocat.txt in the octobox repository for you (as you can see in the browser below).
 
-See recent commit history
-git log
-See commit history for the last two commits
-git log -2
-See commit history for the last two commits, with diff
-git log -p -2
-See commit history printed in single lines
-git log --pretty=oneline
-Revert one commit, push it
-git revert dd61ab21
-git push origin master
-Revert to the moment before one commit
-# reset the index to the desired tree
-git reset 56e05fced
+	You should run the git status command again to see how the repository status has changed:
 
-# move the branch pointer back to the previous HEAD
-git reset --soft HEAD@{1}
+	git status
 
-git commit -m "Revert to 56e05fced"
+1.4 Adding Changes
 
-# Update working copy to reflect the new commit
-git reset --hard
-Source: http://stackoverflow.com/q/1895059/1391963
+	Good, it looks like our Git repository is working properly. Notice how Git says octocat.txt is "untracked"? That means Git sees that octocat.txt is a new file.
 
-Undo last commit, preserving local changes
-git reset --soft HEAD~1
-Undo last commit, without preserving local changes
-git reset --hard HEAD~1
-Undo last commit, preserving local changes in index
-git reset --mixed HEAD~1
-Or git reset HEAD~1
-See also http://stackoverflow.com/q/927358/1391963
+	To tell Git to start tracking changes made to octocat.txt, we first need to add it to the staging area by using git add.
 
-Undo non-pushed commits
-git reset origin/master
-Reset to remote state
-git fetch origin
-git reset --hard origin/master
-See local branches
-git branch
-See all branches
-git branch -a
-Make some changes, create a patch
-git diff > patch-issue-1.patch
-Add a file and create a patch
-git add newfile
-git diff --staged > patch-issue-2.patch
-Add a file, make some changes, and create a patch
-git add newfile
-git diff HEAD > patch-issue-2.patch
-Make a patch for a commit
-git format-patch COMMIT_ID
-Make patches for the last two commits
-git format-patch HEAD~2
-Make patches for all non-pushed commits
-git format-patch origin/master
-Create patches that contain binary content
-git format-patch --binary --full-index origin/master
-Apply a patch
-git apply -v patch-name.patch
-Apply a patch created using format-patch
-git am patch1.patch
-Break up multiple changes into separate commits (or commit only part of a changed file)
-git add --patch file.txt
-(press 'y' for the chunks to add)
-git commit -m 'first part of the file'
-(repeat if desired)
-Sources: https://stackoverflow.com/q/4948494/1391963, https://stackoverflow.com/q/1085162/1391963
+	git add octocat.txt
 
-Create a tag
-git tag 7.x-1.3
-Push a tag
-git push origin 7.x-1.3
-Create a branch
-git checkout master
-git branch new-branch-name
-Here master is the starting point for the new branch. Note that with these 2 commands we don't move to the new branch, as we are still in master and we would need to run git checkout new-branch-name. The same can be achieved using one single command: git checkout -b new-branch-name
+1.5 Checking for Changes
 
-Create a branch from a previous commit
-git branch branchname sha1-of-commit
-or using a symbolic reference (e.g. last commit):
+	Good job! Git is now tracking our octocat.txt file. Let's run git status again to see where we stand:
 
-git branch branchname HEAD~1
-You can also use
+	git status
 
-git checkout -b branchname sha1-of-commit
-Source: http://stackoverflow.com/a/2816728/1391963
+1.6 Committing
 
-Checkout a branch
-git checkout new-branch-name
-See commit history for just the current branch
-git cherry -v master
-(master is the branch you want to compare)
+	Notice how Git says changes to be committed? The files listed here are in the Staging Area, and they are not in our repository yet. We could add or remove files from the stage before we store them in the repository.
 
-Merge branch commits
-git checkout master
-git merge branch-name
-Here we are merging all commits of branch-name to master.
+	To store our staged changes we run the commit command with a message describing what we've changed. Let's do that now by typing:
 
-Merge a branch without committing
-git merge branch-name --no-commit --no-ff
-See differences between the current state and a branch
-git diff branch-name
-See differences in a file, between the current state and a branch
-git diff branch-name path/to/file
-Delete a branch
-git branch -d new-branch-name
-Push the new branch
-git push origin new-branch-name
-Get all branches
-git fetch origin
-Get the git root directory
-git rev-parse --show-toplevel
-Source: http://stackoverflow.com/q/957928/1391963
+	git commit -m "Add cute octocat story"
 
-Remove from repository all locally deleted files
-git rm $(git ls-files --deleted)
-Source: http://stackoverflow.com/a/5147119/1391963
+1.7 Adding All Changes
 
-Delete all untracked files
-git clean -f
-Including directories:
+	Great! You also can use wildcards if you want to add many files of the same type. Notice that I've added a bunch of .txt files into your directory below.
 
-git clean -f -d
-Preventing sudden cardiac arrest:
+	I put some in an octofamily directory and some others ended up in the root of our octobox. Luckily, we can add all the new files using a wildcard with git add. Don't forget the quotes!
 
-git clean -n -f -d
-Source: http://stackoverflow.com/q/61212/1391963
+	git add '*.txt'
 
-Delete all files from a git repository that have already been deleted from disk:
-git ls-files --deleted -z | xargs -0 git rm
-Source (and alternatives): https://stackoverflow.com/a/5147119/1391963
+1.8 Committing All Changes
 
-Show total file size difference between two commits
-Short answer: Git does not do that.
-Long answer: See http://stackoverflow.com/a/10847242/1391963
+	Okay, you've added all the text files to the staging area. Feel free to run git status to see what you're about to commit.
 
-Unstage (undo add) files:
-git reset HEAD file.txt
-See closest tag
-git describe --tags `git rev-list --tags --max-count=1`
-Source: http://stackoverflow.com/q/1404796/1391963. See also git-describe.
+	If it looks good, go ahead and run:
 
-Debug SSH connection issues
-GIT_SSH_COMMAND="ssh -vvv" git clone <your_repository>
-Have git pull running every X seconds, with GNU Screen
-screen
-for((i=1;i<=10000;i+=1)); do sleep 30 && git pull; done
-Use Ctrl+a Ctrl+d to detach the screen.
+	git commit -m 'Add all the octocat txt files'
 
-See previous git commands executed
-history | grep git
-or
+1.9 History
 
-grep '^git'  /root/.bash_history
-See recently used branches (i.e. branches ordered by most recent commit)
-git for-each-ref --sort=-committerdate refs/heads/ | head
-Source: http://stackoverflow.com/q/5188320/1391963
+	So we've made a few commits. Now let's browse them to see what we changed.
 
-Tar project files, excluding .git directory
-cd ..
-tar cJf project.tar.xz project/ --exclude-vcs
-Tar all locally modified files
-git diff --name-only | xargs tar -cf project.tar -T -
-Look for conflicts in your current files
-grep -H -r "<<<" *
-grep -H -r ">>>" *
-grep -H -r '^=======$' *
+	Fortunately for us, there's git log. Think of Git's log as a journal that remembers all the changes we've committed so far, in the order we committed them. Try running it now:
+
+	git log
+
+1.10 Remote Repositories
+
+	Great job! We've gone ahead and created a new empty GitHub repository for you to use with Try Git at https://github.com/try-git/try_git.git. To push our local repo to the GitHub server we'll need to add a remote repository.
+
+	This command takes a remote name and a repository URL, which in your case is https://github.com/try-git/try_git.git.
+
+	Go ahead and run git remote add with the options below:
+
+	git remote add origin https://github.com/try-git/try_git.git
+
+1.11 Pushing Remotely
+
+	The push command tells Git where to put our commits when we're ready, and boy we're ready. So let's push our local changes to our origin repo (on GitHub).
+
+	The name of our remote is origin and the default local branch name is master. The -u tells Git to remember the parameters, so that next time we can simply run git push and Git will know what to do. Go ahead and push it!
+
+	git push -u origin master
+
+1.12 Pulling Remotely
+
+	Let's pretend some time has passed. We've invited other people to our github project who have pulled your changes, made their own commits, and pushed them.
+
+	We can check for changes on our GitHub repository and pull down any new changes by running:
+
+	git pull origin master
+
+1.13 Differences
+
+	Uh oh, looks like there has been some additions and changes to the octocat family. Let's take a look at what is different from our last commit by using the git diff command.
+
+	In this case we want the diff of our most recent commit, which we can refer to using the HEAD pointer.
+
+	git diff HEAD
+
+1.14 Staged Differences
+
+	Another great use for diff is looking at changes within files that have already been staged. Remember, staged files are files we have told git that are ready to be committed.
+
+	Let's use git add to stage octofamily/octodog.txt, which I just added to the family for you.
+
+	git add octofamily/octodog.txt
+
+1.15 Staged Differences (cont'd)
+
+	Good, now go ahead and run git diff with the --staged option to see the changes you just staged. You should see that octodog.txt was created.
+
+	git diff --staged
+
+1.16 Resetting the Stage
+
+	So now that octodog is part of the family, octocat is all depressed. Since we love octocat more than octodog, we'll turn his frown around by removing octodog.txt.
+
+	You can unstage files by using the git reset command. Go ahead and remove octofamily/octodog.txt.
+
+	git reset octofamily/octodog.txt
+
+
+1.17 Undo
+
+	git reset did a great job of unstaging octodog.txt, but you'll notice that he's still there. He's just not staged anymore. It would be great if we could go back to how things were before octodog came around and ruined the party.
+
+	Files can be changed back to how they were at the last commit by using the command: git checkout -- <target>. Go ahead and get rid of all the changes since the last commit for octocat.txt
+
+	git checkout -- octocat.txt
+
+
+1.18 Branching Out
+
+	When developers are working on a feature or bug they'll often create a copy (aka. branch) of their code they can make separate commits to. Then when they're done they can merge this branch back into their main master branch.
+
+	We want to remove all these pesky octocats, so let's create a branch called clean_up, where we'll do all the work:
+
+	git branch clean_up
+
+1.19 Switching Branches
+
+	Great! Now if you type git branch you'll see two local branches: a main branch named master and your new branch named clean_up.
+
+	You can switch branches using the git checkout <branch> command. Try it now to switch to the clean_up branch:
+
+	git checkout clean_up
+
+1.20 Removing All The Things
+
+	Ok, so you're in the clean_up branch. You can finally remove all those pesky octocats by using the git rm command which will not only remove the actual files from disk, but will also stage the removal of the files for us.
+
+	You're going to want to use a wildcard again to get all the octocats in one sweep, go ahead and run:
+
+	git rm '*.txt'
+
+1.21 Commiting Branch Changes
+
+	Now that you've removed all the cats you'll need to commit your changes.
+
+	Feel free to run git status to check the changes you're about to commit.
+
+	git commit -m "Remove all the cats"
+
+1.22 Switching Back to master
+
+	Great, you're almost finished with the cat... er the bug fix, you just need to switch back to the master branch so you can copy (or merge) your changes from the clean_up branch back into the master branch.
+
+	Go ahead and checkout the master branch:
+
+	git checkout master
+
+1.23 Preparing to Merge
+
+	Alrighty, the moment has come when you have to merge your changes from the clean_up branch into the master branch. Take a deep breath, it's not that scary.
+
+	We're already on the master branch, so we just need to tell Git to merge the clean_up branch into it:
+
+	git merge clean_up
+
+1.24 Keeping Things Clean
+
+	Congratulations! You just accomplished your first successful bugfix and merge. All that's left to do is clean up after yourself. Since you're done with the clean_up branch you don't need it anymore.
+
+	You can use git branch -d <branch name> to delete a branch. Go ahead and delete the clean_up branch now:
+
+	git branch -d clean_up
+
+1.25 The Final Push
+
+	Here we are, at the last step. I'm proud that you've made it this far, and it's been great learning Git with you. All that's left for you to do now is to push everything you've been working on to your remote repository, and you're done!
+
+	git push
